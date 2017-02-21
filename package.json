@@ -1,0 +1,21 @@
+{
+  "name": "angular2-captcha",
+  "version": "1.0.0",
+  "description": "BotDetect Captcha generator integration for the Angular 2",
+  "main": "index.js",
+  "scripts": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/captcha-com/angular2-captcha.git"
+  },
+  "keywords": [
+    "captcha",
+    "angular2",
+    "botdetect"
+  ],
+  "author": "BotDetect Captcha",
+  "bugs": {
+    "url": "https://github.com/captcha-com/angular2-captcha/issues"
+  },
+  "homepage": "https://github.com/captcha-com/angular2-captcha#readme"
+}
