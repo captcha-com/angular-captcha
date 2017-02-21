@@ -1,6 +1,6 @@
 {
   "name": "angular2-captcha",
-  "version": "1.0.0",
+  "version": "0.0.1",
   "description": "BotDetect Captcha generator integration for the Angular 2",
   "main": "index.js",
   "scripts": {},
