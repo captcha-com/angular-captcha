@@ -2,20 +2,41 @@
   "name": "angular2-captcha",
   "version": "0.0.1",
   "description": "BotDetect Captcha generator integration for the Angular 2",
-  "main": "index.js",
-  "scripts": {},
+  "scripts": {
+    "clean": "rimraf *.d.ts *.js *.map *.metadata.json src/**/*.d.ts src/**/*.js src/**/*.map src/**/*.metadata.json src/**/*.js.map",
+    "build": "ngc -p tsconfig.json",
+    "lint": "tslint --type-check --project tsconfig.json src/**/*.ts",
+    "prepublish": "ngc"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/captcha-com/angular2-captcha.git"
   },
+  "author": "BotDetect Captcha",
+  "bugs": {
+    "url": "http://captcha.com/support"
+  },
+  "homepage": "http://captcha.com",
   "keywords": [
     "captcha",
     "angular2",
     "botdetect"
   ],
-  "author": "BotDetect Captcha",
-  "bugs": {
-    "url": "https://github.com/captcha-com/angular2-captcha/issues"
-  },
-  "homepage": "https://github.com/captcha-com/angular2-captcha#readme"
+  "main": "index.js",
+  "dependencies": {},
+  "devDependencies": {
+    "@angular/common": "^2.4.9",
+    "@angular/compiler": "^2.4.9",
+    "@angular/compiler-cli": "^2.4.9",
+    "@angular/core": "^2.4.9",
+    "@angular/forms": "^2.4.9",
+    "@angular/http": "^2.4.9",
+    "@angular/platform-browser": "^2.4.9",
+    "codelyzer": "^3.0.0-beta.3",
+    "rimraf": "^2.6.1",
+    "rxjs": "^5.2.0",
+    "tslint": "^4.5.1",
+    "typescript": "^2.2.1",
+    "zone.js": "^0.7.7"
+  }
 }
