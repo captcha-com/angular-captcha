@@ -53,7 +53,6 @@ export class CaptchaComponent implements OnInit {
         captchaHtml => {
           this.elementRef.nativeElement.innerHTML = captchaHtml;
           this.addInitScriptToBody();
-          this.removeScriptsNotExecuted();
         },
         error => {
           throw new Error(error);
@@ -110,19 +109,4 @@ export class CaptchaComponent implements OnInit {
     this.document.body.append(this.captchaHelper.scriptInclude(initScriptIncludeUrl, 'BDC_InitScriptInclude'));
   }
 
-  /**
-   * Remove script include and init script in captcha html markup, that are not executed,
-   * because we have used innerHTML to display them.
-   */
-  private removeScriptsNotExecuted(): void {
-    const scriptsNotExecuted = this.elementRef.nativeElement.querySelectorAll('script');
-
-    if (scriptsNotExecuted.length === 0) {
-      return;
-    }
-
-    for (let script of scriptsNotExecuted) {
-      this.renderer.invokeElementMethod(script, 'remove');
-    }
-  }
 }

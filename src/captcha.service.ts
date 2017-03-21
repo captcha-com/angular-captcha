@@ -69,7 +69,7 @@ export class CaptchaService {
     });
 
     return this.http.get(url)
-      .map((response: Response) => response.text())
+      .map((response: Response) => response.text().replace(/<script.*<\/script>/g, ''))
       .catch((error: any) => Observable.throw(error.json().error));
   }
 
