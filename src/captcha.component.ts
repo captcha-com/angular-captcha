@@ -53,7 +53,7 @@ export class CaptchaComponent implements OnInit {
         captchaHtml => {
           this.elementRef.nativeElement.innerHTML = captchaHtml;
           this.addInitScriptToBody();
-		  this.removeScriptsNotExecuted();
+          this.removeScriptsNotExecuted();
         },
         error => {
           throw new Error(error);
