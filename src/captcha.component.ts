@@ -41,19 +41,19 @@ export class CaptchaComponent implements OnInit {
 
     // display captcha html markup on view
     this.addScriptToBody();
-    this.removeScriptsNotExecuted();
-    this.getHtml();
+    this.showHtml();
   }
 
   /**
    * Display captcha html markup in the <botdetect-captcha> tag.
    */
-  getHtml(): void {
+  showHtml(): void {
     this.captchaService.getHtml()
       .subscribe(
         captchaHtml => {
           this.elementRef.nativeElement.innerHTML = captchaHtml;
           this.addInitScriptToBody();
+		  this.removeScriptsNotExecuted();
         },
         error => {
           throw new Error(error);
@@ -117,7 +117,7 @@ export class CaptchaComponent implements OnInit {
   private removeScriptsNotExecuted(): void {
     const scriptsNotExecuted = this.elementRef.nativeElement.querySelectorAll('script');
 
-    if (scriptsNotExecuted.length !== 0) {
+    if (scriptsNotExecuted.length === 0) {
       return;
     }
 
