@@ -5,8 +5,7 @@ import { CaptchaComponent } from './captcha.component';
 import { CaptchaService } from './captcha.service';
 import { CaptchaHelperService } from './captcha-helper.service';
 import { CorrectCaptchaDirective } from './correct-captcha.directive';
-import { BaseUrlPipe } from './base-url.pipe';
-import { HandlerPathPipe } from './handler-path.pipe';
+import { CaptchaEndpointPipe } from './captcha-endpoint.pipe';
 import { CaptchaSettings } from './captcha-settings.interface';
 import { CAPTCHA_SETTINGS } from './config';
 
@@ -15,8 +14,7 @@ import { CAPTCHA_SETTINGS } from './config';
     HttpModule
   ],
   declarations: [
-    BaseUrlPipe,
-    HandlerPathPipe,
+    CaptchaEndpointPipe,
     CaptchaComponent,
     CorrectCaptchaDirective
   ],
@@ -48,8 +46,7 @@ export function provideBotDetectCaptcha(config: CaptchaSettings): any {
       provide: CAPTCHA_SETTINGS,
       useValue: config
     },
-    BaseUrlPipe,
-    HandlerPathPipe,
+    CaptchaEndpointPipe,
     CaptchaService,
     CaptchaHelperService
   ];

@@ -3,8 +3,7 @@ import { Http, Response } from '@angular/http';
 
 import { Observable } from 'rxjs/Rx';
 
-import { BaseUrlPipe } from './base-url.pipe';
-import { HandlerPathPipe } from './handler-path.pipe';
+import { CaptchaEndpointPipe } from './captcha-endpoint.pipe';
 import { CaptchaHelperService } from './captcha-helper.service';
 import { CaptchaSettings } from './captcha-settings.interface';
 import { CAPTCHA_SETTINGS } from './config';
@@ -19,8 +18,7 @@ export class CaptchaService {
 
   constructor(
     private http: Http,
-    private baseUrlPipe: BaseUrlPipe,
-    private handlerPathPipe: HandlerPathPipe,
+    private captchaEndpointPipe: CaptchaEndpointPipe,
     private captchaHelper: CaptchaHelperService,
     @Inject(CAPTCHA_SETTINGS) private config: CaptchaSettings
   ) { }
@@ -37,9 +35,7 @@ export class CaptchaService {
    * The captcha handler url for BotDetect requests.
    */
   get handlerUrl(): string {
-    const baseUrl = this.baseUrlPipe.transform(this.config.baseUrl);
-    const handlerPath = this.handlerPathPipe.transform(this.config.handlerPath);
-    return baseUrl.concat(handlerPath);
+    return this.captchaEndpointPipe.transform(this.config.captchaEndpoint);
   }
 
   /**

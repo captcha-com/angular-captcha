@@ -1,10 +1,10 @@
 import { Pipe, PipeTransform } from '@angular/core';
 
-@Pipe({name: 'baseUrl'})
-export class BaseUrlPipe implements PipeTransform {
+@Pipe({name: 'captchaEndpoint'})
+export class CaptchaEndpointPipe implements PipeTransform {
 
   /**
-   * Strip '/' character from the end of the given url.
+   * Strip '/' character from the end of the given path.
    */
   transform(value: string): string {
     return value.trim().replace(/\/+$/g, '');
