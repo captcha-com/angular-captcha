@@ -103,7 +103,8 @@ export class CaptchaComponent implements OnInit {
     const initScriptIncludeUrl = this.captchaHelper.buildUrl(this.captchaService.handlerUrl, {
       get: 'init-script-include',
       c: this.styleName,
-      t: captchaId.value
+      t: captchaId.value,
+      cs: '201'
     });
 
     this.document.body.append(this.captchaHelper.scriptInclude(initScriptIncludeUrl, 'BDC_InitScriptInclude'));
