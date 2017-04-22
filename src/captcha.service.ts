@@ -14,7 +14,6 @@ declare var BotDetect: any;
 export class CaptchaService {
 
   private _styleName: string;
-  private _botdetectInstance: any;
 
   constructor(
     private http: Http,
@@ -45,14 +44,7 @@ export class CaptchaService {
     if (!this.styleName) {
       return null;
     }
-
-    // BotDetect instance not exist or exist but styleName not match
-    if (!this._botdetectInstance
-        || (this._botdetectInstance.captchaStyleName !== this.styleName)) {
-      this._botdetectInstance = BotDetect.getInstanceByStyleName(this.styleName);
-    }
-
-    return this._botdetectInstance;
+    return BotDetect.getInstanceByStyleName(this.styleName);
   }
 
   /**
