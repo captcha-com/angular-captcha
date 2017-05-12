@@ -1,7 +1,7 @@
 {
   "name": "angular-captcha",
   "version": "0.0.1",
-  "description": "BotDetect Captcha generator integration for the Angular 2+",
+  "description": "BotDetect Angular 2+ Captcha Module",
   "scripts": {
     "clean": "rimraf *.d.ts *.js *.map *.metadata.json src/**/*.d.ts src/**/*.js src/**/*.map src/**/*.metadata.json src/**/*.js.map",
     "build": "ngc -p tsconfig.json",
@@ -14,7 +14,7 @@
   },
   "author": "BotDetect Captcha",
   "bugs": {
-    "url": "http://captcha.com/support"
+    "url": "https://captcha.com/support"
   },
   "homepage": "https://captcha.com",
   "keywords": [
