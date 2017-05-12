@@ -30,7 +30,7 @@ export class CorrectCaptchaDirective implements Validator {
 
     return new Promise((resolve: any) => {
       // the control should have incorrect status first
-      resolve({ correctCaptcha: true });
+      resolve({ incorrectCaptcha: true });
 
       // we only validate the captcha on blur
       if (onBlur) {
