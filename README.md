@@ -1,1 +1,1 @@
-# BotDetect Angular 2+ Captcha Module.
+## BotDetect Captcha Angular Module (TypeScript / Angular 2+)
