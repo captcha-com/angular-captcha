@@ -80,7 +80,7 @@ export class CaptchaComponent implements OnInit {
       get: 'script-include'
     });
 
-    this.document.body.append(this.captchaHelper.scriptInclude(url, 'BDC_ScriptInclude'));
+    this.document.body.appendChild(this.captchaHelper.scriptInclude(url, 'BDC_ScriptInclude'));
   }
 
   /**
@@ -107,7 +107,7 @@ export class CaptchaComponent implements OnInit {
       cs: '201'
     });
 
-    this.document.body.append(this.captchaHelper.scriptInclude(initScriptIncludeUrl, 'BDC_InitScriptInclude'));
+    this.document.body.appendChild(this.captchaHelper.scriptInclude(initScriptIncludeUrl, 'BDC_InitScriptInclude'));
   }
 
 }
