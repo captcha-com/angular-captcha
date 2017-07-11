@@ -33,7 +33,7 @@ export class CaptchaService {
   /**
    * The captcha handler url for BotDetect requests.
    */
-  get handlerUrl(): string {
+  get captchaEndpoint(): string {
     return this.captchaEndpointPipe.transform(this.config.captchaEndpoint);
   }
 
@@ -51,7 +51,7 @@ export class CaptchaService {
    * Get captcha html markup from BotDetect API.
    */
   getHtml(): Observable<string> {
-    const url = this.captchaHelper.buildUrl(this.handlerUrl, {
+    const url = this.captchaHelper.buildUrl(this.captchaEndpoint, {
       get: 'html',
       c: this.styleName
     });

@@ -76,7 +76,7 @@ export class CaptchaComponent implements OnInit {
     }
 
     // build BotDetect client-side script include url
-    const url = this.captchaHelper.buildUrl(this.captchaService.handlerUrl, {
+    const url = this.captchaHelper.buildUrl(this.captchaService.captchaEndpoint, {
       get: 'script-include'
     });
 
@@ -100,7 +100,7 @@ export class CaptchaComponent implements OnInit {
     }
 
     // build BotDetect init script include url.
-    const initScriptIncludeUrl = this.captchaHelper.buildUrl(this.captchaService.handlerUrl, {
+    const initScriptIncludeUrl = this.captchaHelper.buildUrl(this.captchaService.captchaEndpoint, {
       get: 'init-script-include',
       c: this.styleName,
       t: captchaId.value,
