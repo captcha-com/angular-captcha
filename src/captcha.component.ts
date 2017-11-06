@@ -1,5 +1,4 @@
-import { Component, Input, Inject, OnInit, ElementRef, Renderer } from '@angular/core';
-import { DOCUMENT } from '@angular/platform-browser';
+import { Component, Input, Inject, OnInit, ElementRef } from '@angular/core';
 
 import { CaptchaService } from './captcha.service';
 import { CaptchaHelperService } from './captcha-helper.service';
@@ -14,22 +13,16 @@ export class CaptchaComponent implements OnInit {
 
   constructor(
     private elementRef: ElementRef,
-    private renderer: Renderer,
     private captchaService: CaptchaService,
-    private captchaHelper: CaptchaHelperService,
-    @Inject(DOCUMENT) private document: any,
+    private captchaHelper: CaptchaHelperService
   ) { }
 
-  /**
-   * The current captcha id, which will be used for validation purpose.
-   */
+  // The current captcha id, which will be used for validation purpose.
   get captchaId(): string {
     return this.captchaService.botdetectInstance.captchaId;
   }
 
-  /**
-   * Display captcha html markup on component initialize.
-   */
+  // Display captcha html markup on component initialization.
   ngOnInit(): void {
     // if styleName is not specified, the styleName will be 'defaultCaptcha'
     if (!this.styleName) {
@@ -40,74 +33,38 @@ export class CaptchaComponent implements OnInit {
     this.captchaService.styleName = this.styleName;
 
     // display captcha html markup on view
-    this.addScriptToBody();
     this.showHtml();
   }
 
-  /**
-   * Display captcha html markup in the <botdetect-captcha> tag.
-   */
+  // Display captcha html markup in the <botdetect-captcha> tag.
   showHtml(): void {
     this.captchaService.getHtml()
       .subscribe(
         captchaHtml => {
+          // display captcha html markup
           this.elementRef.nativeElement.innerHTML = captchaHtml;
-          this.addInitScriptToBody();
+          // load botdetect scripts
+          this.loadScriptIncludes();
         },
         error => {
           throw new Error(error);
         });
   }
 
-  /**
-   * Reload a new captcha image for the current captcha instance.
-   */
+  // Reload a new captcha image.
   reloadImage(): void {
     this.captchaService.botdetectInstance.reloadImage();
   }
 
-  /**
-   * Add BotDetect client-side script include to body element.
-   */
-  private addScriptToBody(): void {
-    if (this.document.getElementsByClassName('BDC_ScriptInclude').length !== 0) {
-      // BotDetect client-side script is already added
-      return;
-    }
-
-    // build BotDetect client-side script include url
-    const url = this.captchaHelper.buildUrl(this.captchaService.captchaEndpoint, {
-      get: 'script-include'
+  // Load BotDetect scripts.
+  loadScriptIncludes(): void {
+    const scriptIncludeUrl = this.captchaService.captchaEndpoint + '?get=script-include';
+    let self = this;
+    this.captchaHelper.getScript(scriptIncludeUrl, function() {
+      let captchaId = self.elementRef.nativeElement.querySelector('#BDC_VCID_' + self.styleName).value;
+      const initScriptIncludeUrl = self.captchaService.captchaEndpoint +  '?get=init-script-include&c=' + self.styleName + '&t=' + captchaId + '&cs=201';
+      self.captchaHelper.getScript(initScriptIncludeUrl, function() {});
     });
-
-    this.document.body.appendChild(this.captchaHelper.scriptInclude(url, 'BDC_ScriptInclude'));
-  }
-
-  /**
-   * Add BotDetect init script include to body element.
-   */
-  private addInitScriptToBody(): void {
-    // remove included BotDetect init script if it exists
-    let initScriptIncluded = this.document.getElementsByClassName('BDC_InitScriptInclude');
-    if (initScriptIncluded.length !== 0) {
-      this.renderer.invokeElementMethod(initScriptIncluded[0], 'remove');
-    }
-
-    const captchaId = this.elementRef.nativeElement.querySelector('#BDC_VCID_' + this.styleName);
-
-    if (!captchaId) {
-      return;
-    }
-
-    // build BotDetect init script include url.
-    const initScriptIncludeUrl = this.captchaHelper.buildUrl(this.captchaService.captchaEndpoint, {
-      get: 'init-script-include',
-      c: this.styleName,
-      t: captchaId.value,
-      cs: '201'
-    });
-
-    this.document.body.appendChild(this.captchaHelper.scriptInclude(initScriptIncludeUrl, 'BDC_InitScriptInclude'));
   }
 
 }
