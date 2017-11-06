@@ -1,4 +1,4 @@
-import { Component, Input, Inject, OnInit, ElementRef } from '@angular/core';
+import { Component, Input, OnInit, ElementRef } from '@angular/core';
 
 import { CaptchaService } from './captcha.service';
 import { CaptchaHelperService } from './captcha-helper.service';
