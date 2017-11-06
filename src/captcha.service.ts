@@ -55,7 +55,7 @@ export class CaptchaService {
       throw new Error('BotDetect instance does not exist.');
     }
 
-    const url = this.botdetectInstance.validationUrl + '&i' + captchaCode;
+    const url = this.botdetectInstance.validationUrl + '&i=' + captchaCode;
 
     return this.http.get(url)
       .map((response: Response) => response.json())
