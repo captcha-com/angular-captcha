@@ -1,3 +1,4 @@
-import { OpaqueToken } from '@angular/core';
+import { InjectionToken } from '@angular/core';
+import { CaptchaSettings } from './captcha-settings.interface';
 
-export const CAPTCHA_SETTINGS = new OpaqueToken('captcha.settings');
+export let CAPTCHA_SETTINGS = new InjectionToken<CaptchaSettings>('captcha.settings');
