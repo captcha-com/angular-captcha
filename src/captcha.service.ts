@@ -28,16 +28,12 @@ export class CaptchaService {
     return this._styleName;
   }
 
-  /**
-   * The captcha handler url for BotDetect requests.
-   */
+  // The captcha endpoint for BotDetect requests.
   get captchaEndpoint(): string {
     return this.captchaEndpointPipe.transform(this.config.captchaEndpoint);
   }
 
-  /**
-   * Get BotDetect instance, which is provided by BotDetect script.
-   */
+  // Get BotDetect instance, which is provided by BotDetect script.
   get botdetectInstance(): any {
     if (!this.styleName) {
       return null;
@@ -45,9 +41,7 @@ export class CaptchaService {
     return BotDetect.getInstanceByStyleName(this.styleName);
   }
 
-  /**
-   * Get captcha html markup from BotDetect API.
-   */
+  // Get captcha html markup from BotDetect API.
   getHtml(): Observable<string> {
     const url = this.captchaEndpoint + '?get=html&c=' + this.styleName;
     return this.http.get(url)
@@ -55,9 +49,7 @@ export class CaptchaService {
       .catch((error: any) => Observable.throw(error.json().error));
   }
 
-  /**
-   * UI validate captcha.
-   */
+  // UI validate captcha.
   validate(captchaCode: string): Observable<string> {
     if (!this.botdetectInstance) {
       throw new Error('BotDetect instance does not exist.');

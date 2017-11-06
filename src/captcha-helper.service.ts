@@ -8,6 +8,7 @@ export class CaptchaHelperService {
     private http: Http
   ) { }
 
+  // get script and execute it immediately
   getScript(url: string, onLoadSuccess: () => void): void {
     this.http.get(url)
       .map((response: Response) => response.text())
