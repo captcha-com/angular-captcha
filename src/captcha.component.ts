@@ -33,11 +33,11 @@ export class CaptchaComponent implements OnInit {
     this.captchaService.styleName = this.styleName;
 
     // display captcha html markup on view
-    this.showHtml();
+    this.displayHtml();
   }
 
   // Display captcha html markup in the <botdetect-captcha> tag.
-  showHtml(): void {
+  displayHtml(): void {
     this.captchaService.getHtml()
       .subscribe(
         captchaHtml => {
