@@ -2,6 +2,7 @@ import { Injectable, Inject }    from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
 import { Observable } from 'rxjs/Rx';
+import 'rxjs/add/operator/map';
 
 import { CaptchaEndpointPipe } from './captcha-endpoint.pipe';
 import { CaptchaSettings } from './captcha-settings.interface';
