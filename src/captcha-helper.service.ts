@@ -1,17 +1,14 @@
 import { Injectable } from '@angular/core';
-import { Http, Response } from '@angular/http';
+import { HttpClient } from '@angular/common/http';
 
 @Injectable()
 export class CaptchaHelperService {
 
-  constructor(
-    private http: Http
-  ) { }
+  constructor(private http: HttpClient) { }
 
   // get script and execute it immediately
   getScript(url: string, onLoadSuccess: () => void): void {
-    this.http.get(url)
-      .map((response: Response) => response.text())
+    this.http.get(url, { responseType: 'text' })
       .subscribe(
         scriptString => {
           let f = new Function(scriptString); f();
