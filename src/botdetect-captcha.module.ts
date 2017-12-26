@@ -1,5 +1,5 @@
 import { NgModule, ModuleWithProviders } from '@angular/core';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpModule } from '@angular/http';
 
 import { CaptchaComponent } from './captcha.component';
 import { CaptchaService } from './captcha.service';
@@ -11,7 +11,7 @@ import { CAPTCHA_SETTINGS } from './config';
 
 @NgModule({
   imports: [
-    HttpClientModule
+    HttpModule
   ],
   declarations: [
     CaptchaEndpointPipe,

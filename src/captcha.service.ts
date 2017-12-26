@@ -1,8 +1,7 @@
 import { Injectable, Inject }    from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { Http, Response } from '@angular/http';
 
 import { Observable } from 'rxjs/Rx';
-import 'rxjs/add/operator/map';
 
 import { CaptchaEndpointPipe } from './captcha-endpoint.pipe';
 import { CaptchaSettings } from './captcha-settings.interface';
@@ -16,7 +15,7 @@ export class CaptchaService {
   private _styleName: string;
 
   constructor(
-    private http: HttpClient,
+    private http: Http,
     private captchaEndpointPipe: CaptchaEndpointPipe,
     @Inject(CAPTCHA_SETTINGS) private config: CaptchaSettings
   ) { }
@@ -45,17 +44,22 @@ export class CaptchaService {
   // Get captcha html markup from BotDetect API.
   getHtml(): Observable<string> {
     const url = this.captchaEndpoint + '?get=html&c=' + this.styleName;
-    return this.http.get(url, { responseType: 'text' })
-      .map(response => response.replace(/<script.*<\/script>/g, ''));
+    return this.http.get(url)
+      .map((response: Response) => response.text().replace(/<script.*<\/script>/g, ''))
+      .catch((error: any) => Observable.throw(error.json().error));
   }
 
   // UI validate captcha.
-  validate(captchaCode: string): Observable<any> {
+  validate(captchaCode: string): Observable<string> {
     if (!this.botdetectInstance) {
       throw new Error('BotDetect instance does not exist.');
     }
+
     const url = this.botdetectInstance.validationUrl + '&i=' + captchaCode;
-    return this.http.get(url);
+
+    return this.http.get(url)
+      .map((response: Response) => response.json())
+      .catch((error: any) => Observable.throw(error.json().error));
   }
 
 }
