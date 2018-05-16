@@ -1,9 +1,6 @@
 import { Injectable, Inject }    from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
-import { Observable } from 'rxjs/Rx';
-import 'rxjs/add/operator/map';
-
 import { CaptchaEndpointPipe } from './captcha-endpoint.pipe';
 import { CaptchaSettings } from './captcha-settings.interface';
 import { CAPTCHA_SETTINGS } from './config';
@@ -43,14 +40,13 @@ export class CaptchaService {
   }
 
   // Get captcha html markup from BotDetect API.
-  getHtml(): Observable<string> {
+  getHtml(): any {
     const url = this.captchaEndpoint + '?get=html&c=' + this.styleName;
-    return this.http.get(url, { responseType: 'text' })
-      .map(response => response.replace(/<script.*<\/script>/g, ''));
+    return this.http.get(url, { responseType: 'text' });
   }
 
   // UI validate captcha.
-  validate(captchaCode: string): Observable<any> {
+  validate(captchaCode: string): any {
     if (!this.botdetectInstance) {
       throw new Error('BotDetect instance does not exist.');
     }

@@ -42,7 +42,7 @@ export class CaptchaComponent implements OnInit {
       .subscribe(
         captchaHtml => {
           // display captcha html markup
-          this.elementRef.nativeElement.innerHTML = captchaHtml;
+          this.elementRef.nativeElement.innerHTML = captchaHtml.replace(/<script.*<\/script>/g, '');
           // load botdetect scripts
           this.loadScriptIncludes();
         },
