@@ -42,7 +42,7 @@ export class CorrectCaptchaDirective implements Validator {
         if (captchaCode) {
           this.captchaService.validate(captchaCode)
             .subscribe(
-              isHuman => {
+              (isHuman: any) => {
                 if (!isHuman) {
                   // ui captcha validation failed
                   this.captchaService.botdetectInstance.reloadImage();
@@ -52,7 +52,7 @@ export class CorrectCaptchaDirective implements Validator {
                   this.control.setErrors(null);
                 }
               },
-              error => {
+              (error: any) => {
                 throw new Error(error);
               }
             );

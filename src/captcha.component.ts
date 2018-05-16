@@ -40,13 +40,13 @@ export class CaptchaComponent implements OnInit {
   displayHtml(): void {
     this.captchaService.getHtml()
       .subscribe(
-        captchaHtml => {
+        (captchaHtml: any) => {
           // display captcha html markup
           this.elementRef.nativeElement.innerHTML = captchaHtml.replace(/<script.*<\/script>/g, '');
           // load botdetect scripts
           this.loadScriptIncludes();
         },
-        error => {
+        (error: any) => {
           throw new Error(error);
         });
   }
