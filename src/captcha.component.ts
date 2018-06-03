@@ -22,6 +22,11 @@ export class CaptchaComponent implements OnInit {
     return this.captchaService.botdetectInstance.captchaId;
   }
 
+  // The typed captcha code value.
+  get captchaCode(): string {
+    return this.captchaService.botdetectInstance.userInput.value;
+  }
+
   // Display captcha html markup on component initialization.
   ngOnInit(): void {
     // if styleName is not specified, the styleName will be 'defaultCaptcha'
