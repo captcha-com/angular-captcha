@@ -12,7 +12,7 @@ export class CaptchaHelperService {
       .subscribe(
         scriptString => {
           let f = new Function(scriptString); f();
-          setTimeout(onLoadSuccess, 100);
+          setTimeout(onLoadSuccess, 200);
         }
       );
   }
