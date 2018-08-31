@@ -63,13 +63,9 @@ export class CaptchaComponent implements OnInit {
 
   // Load BotDetect scripts.
   loadScriptIncludes(): void {
-    const scriptIncludeUrl = this.captchaService.captchaEndpoint + '?get=script-include';
-    let self = this;
-    this.captchaHelper.getScript(scriptIncludeUrl, function() {
-      let captchaId = self.elementRef.nativeElement.querySelector('#BDC_VCID_' + self.styleName).value;
-      const initScriptIncludeUrl = self.captchaService.captchaEndpoint +  '?get=init-script-include&c=' + self.styleName + '&t=' + captchaId + '&cs=201';
-      self.captchaHelper.getScript(initScriptIncludeUrl, function() {});
-    });
+    let captchaId = this.elementRef.nativeElement.querySelector('#BDC_VCID_' + this.styleName).value;
+    const scriptIncludeUrl = this.captchaService.captchaEndpoint +  '?get=script-include&c=' + this.styleName + '&t=' + captchaId + '&cs=201';
+    this.captchaHelper.getScript(scriptIncludeUrl);
   }
 
 }
