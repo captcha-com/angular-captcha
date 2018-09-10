@@ -45,7 +45,7 @@ export class CaptchaComponent implements OnInit {
   displayHtml(): void {
     this.captchaService.getHtml()
       .subscribe(
-        (captchaHtml: any) => {
+        (captchaHtml: string) => {
           // display captcha html markup
           this.elementRef.nativeElement.innerHTML = captchaHtml.replace(/<script.*<\/script>/g, '');
           // load botdetect scripts
@@ -59,6 +59,28 @@ export class CaptchaComponent implements OnInit {
   // Reload a new captcha image.
   reloadImage(): void {
     this.captchaService.botdetectInstance.reloadImage();
+  }
+
+  // Validate captcha on client-side and execute user callback function on ajax success
+  validateUnSafe(callback: (isHuman: boolean) => void): void {
+    let captchaCode =this.captchaService.botdetectInstance.userInput.value;
+    if (captchaCode.length !== 0) {
+      this.captchaService.validateUnSafe(captchaCode)
+        .subscribe(
+          (isHuman: boolean) => {
+            callback(isHuman);
+            if (!isHuman) {
+              this.reloadImage();
+            }
+          },
+          (error: any) => {
+            throw new Error(error);
+          }
+        );
+    } else {
+      const isHuman = false;
+      callback(isHuman);
+    }
   }
 
   // Load BotDetect scripts.
