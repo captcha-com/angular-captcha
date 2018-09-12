@@ -22,4 +22,8 @@ export class CaptchaHelperService {
       );
   }
 
+  useUserInputBlurValidation(userInput: any): boolean {
+    return (userInput.getAttribute('correctCaptcha') !== null);
+  }
+
 }
