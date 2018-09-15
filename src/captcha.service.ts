@@ -46,7 +46,7 @@ export class CaptchaService {
   }
 
   // UI validate captcha.
-  validateUnSafe(captchaCode: string): any {
+  validateUnsafe(captchaCode: string): any {
     if (!this.botdetectInstance) {
       throw new Error('BotDetect instance does not exist.');
     }

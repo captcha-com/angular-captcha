@@ -40,7 +40,7 @@ export class CorrectCaptchaDirective implements Validator {
         let captchaCode = this.document.getElementById(userInputID).value;
 
         if (captchaCode) {
-          this.captchaService.validateUnSafe(captchaCode)
+          this.captchaService.validateUnsafe(captchaCode)
             .subscribe(
               (isHuman: boolean) => {
                 if (!isHuman) {

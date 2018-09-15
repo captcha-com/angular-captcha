@@ -62,11 +62,11 @@ export class CaptchaComponent implements OnInit {
   }
 
   // Validate captcha on client-side and execute user callback function on ajax success
-  validateUnSafe(callback: (isHuman: boolean) => void): void {
+  validateUnsafe(callback: (isHuman: boolean) => void): void {
     let userInput = this.captchaService.botdetectInstance.userInput;
     let captchaCode = userInput.value;
     if (captchaCode.length !== 0) {
-      this.captchaService.validateUnSafe(captchaCode)
+      this.captchaService.validateUnsafe(captchaCode)
         .subscribe(
           (isHuman: boolean) => {
             callback(isHuman);
