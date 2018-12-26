@@ -22,6 +22,11 @@ export class CaptchaComponent implements OnInit {
     return this.captchaService.botdetectInstance.captchaId;
   }
 
+  // The typed captcha code value.
+  get captchaCode(): string {
+    return this.captchaService.botdetectInstance.userInput.value;
+  }
+
   // Display captcha html markup on component initialization.
   ngOnInit(): void {
     // if styleName is not specified, the styleName will be 'defaultCaptcha'
@@ -56,15 +61,34 @@ export class CaptchaComponent implements OnInit {
     this.captchaService.botdetectInstance.reloadImage();
   }
 
+  // Validate captcha on client-side and execute user callback function on ajax success
+  validateUnsafe(callback: (isHuman: boolean) => void): void {
+    let userInput = this.captchaService.botdetectInstance.userInput;
+    let captchaCode = userInput.value;
+    if (captchaCode.length !== 0) {
+      this.captchaService.validateUnsafe(captchaCode)
+        .subscribe(
+          (isHuman: boolean) => {
+            callback(isHuman);
+            if (!this.captchaHelper.useUserInputBlurValidation(userInput) && !isHuman) {
+              this.reloadImage();
+            }
+          },
+          (error: any) => {
+            throw new Error(error);
+          }
+        );
+    } else {
+      const isHuman = false;
+      callback(isHuman);
+    }
+  }
+
   // Load BotDetect scripts.
   loadScriptIncludes(): void {
-    const scriptIncludeUrl = this.captchaService.captchaEndpoint + '?get=script-include';
-    let self = this;
-    this.captchaHelper.getScript(scriptIncludeUrl, function() {
-      let captchaId = self.elementRef.nativeElement.querySelector('#BDC_VCID_' + self.styleName).value;
-      const initScriptIncludeUrl = self.captchaService.captchaEndpoint +  '?get=init-script-include&c=' + self.styleName + '&t=' + captchaId + '&cs=201';
-      self.captchaHelper.getScript(initScriptIncludeUrl, function() {});
-    });
+    let captchaId = this.elementRef.nativeElement.querySelector('#BDC_VCID_' + this.styleName).value;
+    const scriptIncludeUrl = this.captchaService.captchaEndpoint +  '?get=script-include&c=' + this.styleName + '&t=' + captchaId + '&cs=201';
+    this.captchaHelper.getScript(scriptIncludeUrl);
   }
 
 }

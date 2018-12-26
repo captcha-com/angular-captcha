@@ -50,11 +50,10 @@ export class CaptchaService {
   }
 
   // UI validate captcha.
-  validate(captchaCode: string): Observable<string> {
+  validateUnsafe(captchaCode: string): any {
     if (!this.botdetectInstance) {
       throw new Error('BotDetect instance does not exist.');
     }
-
     const url = this.botdetectInstance.validationUrl + '&i=' + captchaCode;
 
     return this.http.get(url)

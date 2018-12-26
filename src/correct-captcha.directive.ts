@@ -40,9 +40,9 @@ export class CorrectCaptchaDirective implements Validator {
         let captchaCode = this.document.getElementById(userInputID).value;
 
         if (captchaCode) {
-          this.captchaService.validate(captchaCode)
+          this.captchaService.validateUnsafe(captchaCode)
             .subscribe(
-              isHuman => {
+              (isHuman: boolean) => {
                 if (!isHuman) {
                   // ui captcha validation failed
                   this.captchaService.botdetectInstance.reloadImage();
@@ -52,7 +52,7 @@ export class CorrectCaptchaDirective implements Validator {
                   this.control.setErrors(null);
                 }
               },
-              error => {
+              (error: any) => {
                 throw new Error(error);
               }
             );
