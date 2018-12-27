@@ -1,6 +1,6 @@
 {
   "name": "angular-captcha",
-  "version": "2.3.0",
+  "version": "2.4.0",
   "description": "BotDetect Captcha Angular Module (TypeScript: Angular 2/4/5/6/7+)",
   "scripts": {
     "clean": "rimraf *.d.ts *.js *.map *.metadata.json src/**/*.d.ts src/**/*.js src/**/*.map src/**/*.metadata.json src/**/*.js.map",
