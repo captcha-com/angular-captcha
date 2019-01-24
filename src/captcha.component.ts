@@ -9,7 +9,8 @@ import { CaptchaHelperService } from './captcha-helper.service';
 })
 export class CaptchaComponent implements OnInit {
 
-  @Input() styleName: string;
+  @Input() styleName: string; // backward compatible
+  @Input() captchaStyleName: string;
 
   constructor(
     private elementRef: ElementRef,
@@ -29,16 +30,32 @@ export class CaptchaComponent implements OnInit {
 
   // Display captcha html markup on component initialization.
   ngOnInit(): void {
-    // if styleName is not specified, the styleName will be 'defaultCaptcha'
-    if (!this.styleName) {
-      this.styleName = 'defaultCaptcha';
-    }
+    this.captchaStyleName = this.getCaptchaStyleName();
 
     // set captcha style name to CaptchaService for creating BotDetect object
-    this.captchaService.styleName = this.styleName;
+    this.captchaService.captchaStyleName = this.captchaStyleName;
 
     // display captcha html markup on view
     this.displayHtml();
+  }
+
+  // Get captcha style name.
+  getCaptchaStyleName(): string {
+    let styleName;
+
+    styleName = this.captchaStyleName;
+    if (styleName) {
+      return styleName;
+    }
+
+    // backward compatible
+    styleName = this.styleName;
+    if (styleName) {
+      return styleName;
+    }
+
+    styleName = 'defaultCaptcha';
+    return styleName;
   }
 
   // Display captcha html markup in the <botdetect-captcha> tag.
@@ -86,8 +103,8 @@ export class CaptchaComponent implements OnInit {
 
   // Load BotDetect scripts.
   loadScriptIncludes(): void {
-    let captchaId = this.elementRef.nativeElement.querySelector('#BDC_VCID_' + this.styleName).value;
-    const scriptIncludeUrl = this.captchaService.captchaEndpoint +  '?get=script-include&c=' + this.styleName + '&t=' + captchaId + '&cs=201';
+    let captchaId = this.elementRef.nativeElement.querySelector('#BDC_VCID_' + this.captchaStyleName).value;
+    const scriptIncludeUrl = this.captchaService.captchaEndpoint +  '?get=script-include&c=' + this.captchaStyleName + '&t=' + captchaId + '&cs=201';
     this.captchaHelper.getScript(scriptIncludeUrl);
   }
 

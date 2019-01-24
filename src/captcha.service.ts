@@ -10,7 +10,7 @@ declare var BotDetect: any;
 @Injectable()
 export class CaptchaService {
 
-  private _styleName: string;
+  private _captchaStyleName: string;
 
   constructor(
     private http: HttpClient,
@@ -18,12 +18,12 @@ export class CaptchaService {
     @Inject(CAPTCHA_SETTINGS) private config: CaptchaSettings
   ) { }
 
-  set styleName(styleName: string) {
-    this._styleName = styleName;
+  set captchaStyleName(captchaStyleName: string) {
+    this._captchaStyleName = captchaStyleName;
   }
 
-  get styleName(): string {
-    return this._styleName;
+  get captchaStyleName(): string {
+    return this._captchaStyleName;
   }
 
   // The captcha endpoint for BotDetect requests.
@@ -33,15 +33,15 @@ export class CaptchaService {
 
   // Get BotDetect instance, which is provided by BotDetect script.
   get botdetectInstance(): any {
-    if (!this.styleName) {
+    if (!this.captchaStyleName) {
       return null;
     }
-    return BotDetect.getInstanceByStyleName(this.styleName);
+    return BotDetect.getInstanceByStyleName(this.captchaStyleName);
   }
 
   // Get captcha html markup from BotDetect API.
   getHtml(): any {
-    const url = this.captchaEndpoint + '?get=html&c=' + this.styleName;
+    const url = this.captchaEndpoint + '?get=html&c=' + this.captchaStyleName;
     return this.http.get(url, { responseType: 'text' });
   }
 
