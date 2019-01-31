@@ -23,9 +23,14 @@ export class CaptchaComponent implements OnInit {
     return this.captchaService.botdetectInstance.captchaId;
   }
 
-  // The typed captcha code value.
+  // The user entered captcha code value.
+  // keep this method for backward compatibility
   get captchaCode(): string {
     return this.captchaService.botdetectInstance.userInput.value;
+  }
+
+  get userEnteredCaptchaCode(): string {
+    return this.captchaCode;
   }
 
   // Display captcha html markup on component initialization.
