@@ -59,8 +59,7 @@ export class CaptchaComponent implements OnInit {
       return styleName;
     }
 
-    styleName = 'defaultCaptcha';
-    return styleName;
+    throw new Error('The captchaStyleName attribute is not found or its value is not set.');
   }
 
   // Display captcha html markup in the <botdetect-captcha> tag.
