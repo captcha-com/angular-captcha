@@ -42,16 +42,16 @@ export class CaptchaHelperService {
 
   // change relative to absolute urls in captcha html markup
   changeRelativeToAbsoluteUrls(originCaptchaHtml: string, captchaEndpoint: string): string {
-    var captchaEndpointHandler = this.getCaptchaEndpointHandler(captchaEndpoint);
-    var backendUrl = this.getBackendBaseUrl(captchaEndpoint, captchaEndpointHandler);
+    let captchaEndpointHandler = this.getCaptchaEndpointHandler(captchaEndpoint);
+    let backendUrl = this.getBackendBaseUrl(captchaEndpoint, captchaEndpointHandler);
 
     originCaptchaHtml = originCaptchaHtml.replace(/<script.*<\/script>/g, '');
-    var relativeUrls = originCaptchaHtml.match(/(src|href)=\"([^"]+)\"/g);
+    let relativeUrls = originCaptchaHtml.match(/(src|href)=\"([^"]+)\"/g);
     
-    var relativeUrl, relativeUrlPrefixPattern, absoluteUrl,
+    let relativeUrl, relativeUrlPrefixPattern, absoluteUrl,
         changedCaptchaHtml = originCaptchaHtml;
 
-    for (var i = 0; i < relativeUrls.length; i++) {
+    for (let i = 0; i < relativeUrls.length; i++) {
       relativeUrl = relativeUrls[i].slice(0, -1).replace(/src=\"|href=\"/, '');
       relativeUrlPrefixPattern = new RegExp(".*" + captchaEndpointHandler);
       absoluteUrl = relativeUrl.replace(relativeUrlPrefixPattern, backendUrl + captchaEndpointHandler);
