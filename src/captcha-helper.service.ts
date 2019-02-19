@@ -26,4 +26,39 @@ export class CaptchaHelperService {
     return (userInput.getAttribute('correctCaptcha') !== null);
   }
 
+  // get captcha endpoint handler from configued captchaEndpoint value,
+  // the result can be "simple-captcha-endpoint.ashx", "botdetectcaptcha",
+  // or "simple-botdetect.php"
+  getCaptchaEndpointHandler(captchaEndpoint: string): string {
+    let splited = captchaEndpoint.split('/');
+    return splited[splited.length - 1];
+  }
+
+  // get backend base url from configued captchaEndpoint value
+  getBackendBaseUrl(captchaEndpoint: string, captchaEndpointHandler: string): string {
+    let lastIndex = captchaEndpoint.lastIndexOf(captchaEndpointHandler);
+    return captchaEndpoint.substring(0, lastIndex);
+  }
+
+  // change relative to absolute urls in captcha html markup
+  changeRelativeToAbsoluteUrls(originCaptchaHtml: string, captchaEndpoint: string): string {
+    var captchaEndpointHandler = this.getCaptchaEndpointHandler(captchaEndpoint);
+    var backendUrl = this.getBackendBaseUrl(captchaEndpoint, captchaEndpointHandler);
+
+    originCaptchaHtml = originCaptchaHtml.replace(/<script.*<\/script>/g, '');
+    var relativeUrls = originCaptchaHtml.match(/(src|href)=\"([^"]+)\"/g);
+    
+    var relativeUrl, relativeUrlPrefixPattern, absoluteUrl,
+        changedCaptchaHtml = originCaptchaHtml;
+
+    for (var i = 0; i < relativeUrls.length; i++) {
+      relativeUrl = relativeUrls[i].slice(0, -1).replace(/src=\"|href=\"/, '');
+      relativeUrlPrefixPattern = new RegExp(".*" + captchaEndpointHandler);
+      absoluteUrl = relativeUrl.replace(relativeUrlPrefixPattern, backendUrl + captchaEndpointHandler);
+      changedCaptchaHtml = changedCaptchaHtml.replace(relativeUrl, absoluteUrl);
+    }
+
+    return changedCaptchaHtml;
+  }
+
 }

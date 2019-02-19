@@ -68,7 +68,9 @@ export class CaptchaComponent implements OnInit {
       .subscribe(
         (captchaHtml: string) => {
           // display captcha html markup
-          this.elementRef.nativeElement.innerHTML = captchaHtml.replace(/<script.*<\/script>/g, '');
+          captchaHtml = this.captchaHelper.changeRelativeToAbsoluteUrls(captchaHtml, this.captchaService.captchaEndpoint);
+          this.elementRef.nativeElement.innerHTML = captchaHtml;
+          
           // load botdetect scripts
           this.loadScriptIncludes();
         },
