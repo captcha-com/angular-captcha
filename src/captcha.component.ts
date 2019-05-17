@@ -18,12 +18,17 @@ export class CaptchaComponent implements OnInit {
     private captchaHelper: CaptchaHelperService
   ) { }
 
-  // The current captcha id, which will be used for validation purpose.
+  // provide captchaEndpoint for getting captcha challenge.
+  set captchaEndpoint(captchaEndpoint: string) {
+    CaptchaService.captchaEndpoint = captchaEndpoint;
+  }
+
+  // the current captcha id, which will be used for validation purpose.
   get captchaId(): string {
     return this.captchaService.botdetectInstance.captchaId;
   }
 
-  // The user entered captcha code value.
+  // the user entered captcha code value.
   // keep this method for backward compatibility
   get captchaCode(): string {
     return this.captchaService.botdetectInstance.userInput.value;
@@ -33,7 +38,7 @@ export class CaptchaComponent implements OnInit {
     return this.captchaCode;
   }
 
-  // Display captcha html markup on component initialization.
+  // display captcha html markup on component initialization.
   ngOnInit(): void {
     this.captchaStyleName = this.getCaptchaStyleName();
 
@@ -44,7 +49,7 @@ export class CaptchaComponent implements OnInit {
     this.displayHtml();
   }
 
-  // Get captcha style name.
+  // get captcha style name.
   getCaptchaStyleName(): string {
     let styleName;
 
@@ -62,7 +67,7 @@ export class CaptchaComponent implements OnInit {
     throw new Error('The captchaStyleName attribute is not found or its value is not set.');
   }
 
-  // Display captcha html markup in the <botdetect-captcha> tag.
+  // display captcha html markup in the <botdetect-captcha> tag.
   displayHtml(): void {
     this.captchaService.getHtml()
       .subscribe(
@@ -79,12 +84,12 @@ export class CaptchaComponent implements OnInit {
         });
   }
 
-  // Reload a new captcha image.
+  // reload a new captcha image.
   reloadImage(): void {
     this.captchaService.botdetectInstance.reloadImage();
   }
 
-  // Validate captcha on client-side and execute user callback function on ajax success
+  // validate captcha on client-side and execute user callback function on ajax success
   validateUnsafe(callback: (isHuman: boolean) => void): void {
     let userInput = this.captchaService.botdetectInstance.userInput;
     let captchaCode = userInput.value;
@@ -107,7 +112,7 @@ export class CaptchaComponent implements OnInit {
     }
   }
 
-  // Load BotDetect scripts.
+  // load botdetect scripts.
   loadScriptIncludes(): void {
     let captchaId = this.elementRef.nativeElement.querySelector('#BDC_VCID_' + this.captchaStyleName).value;
     const scriptIncludeUrl = this.captchaService.captchaEndpoint +  '?get=script-include&c=' + this.captchaStyleName + '&t=' + captchaId + '&cs=201';

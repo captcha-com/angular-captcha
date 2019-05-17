@@ -28,7 +28,7 @@ export class CaptchaHelperService {
   }
 
   // get captcha endpoint handler from configued captchaEndpoint value,
-  // the result can be "simple-captcha-endpoint.ashx", "botdetectcaptcha",
+  // the result can be "simple-captcha-endpoint.ashx", "simple-captcha-endpoint",
   // or "simple-botdetect.php"
   getCaptchaEndpointHandler(captchaEndpoint: string): string {
     let splited = captchaEndpoint.split('/');
