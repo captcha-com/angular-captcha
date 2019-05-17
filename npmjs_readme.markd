@@ -1,4 +1,4 @@
-## BotDetect Captcha Angular Module (TypeScript: Angular 2/3/4/5/6/7+)
+## BotDetect Captcha Angular Module (TypeScript: Angular 2/4/5/6/7+)
 
 ### Requirements:
 BotDetect Captcha Angular Module requires [BotDetect ASP.NET Captcha](https://captcha.com/asp.net-captcha.html#simple-api), [BotDetect Java Captcha](https://captcha.com/java-captcha.html#simple-api) or [BotDetect PHP Captcha](https://captcha.com/php-captcha.html#simple-api) library to generate Captcha challenges. Simple API support for ASP.NET Core and .NET Core will be released this month -- very likely during the week of 2018/11/19-25. See our [roadmap](https://captcha.com/captcha-roadmap-and-release-notes.html#aspnet-release-notes) for details.
