@@ -27,24 +27,24 @@ export class CaptchaService {
     CaptchaService._captchaEndpoint = captchaEndpoint;
   }
 
-  // The captcha endpoint for BotDetect requests.
+  // the captcha endpoint for botdetect requests.
   get captchaEndpoint(): string {
     return this.captchaEndpointPipe.transform(CaptchaService._captchaEndpoint);
   }
 
-  // Get BotDetect instance, which is provided by BotDetect script.
+  // get botdetect instance, which is provided by botdetect script.
   get botdetectInstance(): any {
     return BotDetect.getInstanceByStyleName(this.captchaStyleName);
   }
 
-  // Check if configured captchaEndpoint is valid or not.
+  // check if configured captchaEndpoint is valid or not.
   isCaptchaEndpointValid(): boolean {
     return ((this.captchaEndpoint !== undefined)
             && (this.captchaEndpoint !== null)
             && (this.captchaEndpoint !== ''));
   }
 
-  // Get captcha html markup from BotDetect API.
+  // get captcha html markup from botdetect api.
   getHtml(): any {
     if (!this.isCaptchaEndpointValid()) {
       throw new Error("\'captchaEndpoint' setting is not set!");
@@ -54,7 +54,7 @@ export class CaptchaService {
     return this.http.get(url, { responseType: 'text' });
   }
 
-  // UI validate captcha.
+  // ui validate captcha.
   validateUnsafe(captchaCode: string): any {
     if (!this.botdetectInstance) {
       throw new Error('BotDetect instance does not exist.');
