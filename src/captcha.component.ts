@@ -18,6 +18,11 @@ export class CaptchaComponent implements OnInit {
     private captchaHelper: CaptchaHelperService
   ) { }
 
+  // Provide captchaEndpoint for getting captcha challenge.
+  set captchaEndpoint(captchaEndpoint: string) {
+    CaptchaService.captchaEndpoint = captchaEndpoint;
+  }
+
   // The current captcha id, which will be used for validation purpose.
   get captchaId(): string {
     return this.captchaService.botdetectInstance.captchaId;

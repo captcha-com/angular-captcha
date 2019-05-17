@@ -2,20 +2,17 @@ import { Injectable, Inject }    from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
 import { CaptchaEndpointPipe } from './captcha-endpoint.pipe';
-import { CaptchaSettings } from './captcha-settings.interface';
-import { CAPTCHA_SETTINGS } from './config';
-
 declare var BotDetect: any;
 
 @Injectable()
 export class CaptchaService {
 
   private _captchaStyleName: string;
+  private static _captchaEndpoint: string;
 
   constructor(
     private http: HttpClient,
-    private captchaEndpointPipe: CaptchaEndpointPipe,
-    @Inject(CAPTCHA_SETTINGS) private config: CaptchaSettings
+    private captchaEndpointPipe: CaptchaEndpointPipe
   ) { }
 
   set captchaStyleName(captchaStyleName: string) {
@@ -26,21 +23,33 @@ export class CaptchaService {
     return this._captchaStyleName;
   }
 
+  static set captchaEndpoint(captchaEndpoint: string) {
+    CaptchaService._captchaEndpoint = captchaEndpoint;
+  }
+
   // The captcha endpoint for BotDetect requests.
   get captchaEndpoint(): string {
-    return this.captchaEndpointPipe.transform(this.config.captchaEndpoint);
+    return this.captchaEndpointPipe.transform(CaptchaService._captchaEndpoint);
   }
 
   // Get BotDetect instance, which is provided by BotDetect script.
   get botdetectInstance(): any {
-    if (!this.captchaStyleName) {
-      return null;
-    }
     return BotDetect.getInstanceByStyleName(this.captchaStyleName);
+  }
+
+  // Check if configured captchaEndpoint is valid or not.
+  isCaptchaEndpointValid(): boolean {
+    return ((this.captchaEndpoint !== undefined)
+            && (this.captchaEndpoint !== null)
+            && (this.captchaEndpoint !== ''));
   }
 
   // Get captcha html markup from BotDetect API.
   getHtml(): any {
+    if (!this.isCaptchaEndpointValid()) {
+      throw new Error("\'captchaEndpoint' setting is not set!");
+    }
+
     const url = this.captchaEndpoint + '?get=html&c=' + this.captchaStyleName;
     return this.http.get(url, { responseType: 'text' });
   }

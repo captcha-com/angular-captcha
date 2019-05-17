@@ -5,6 +5,9 @@ export class CaptchaEndpointPipe implements PipeTransform {
 
   // Strip '/' character from the end of the given path.
   transform(value: string): string {
+    if ((value === undefined) || (value === null)) {
+      return value;
+    }
     return value.trim().replace(/\/+$/g, '');
   }
 }
