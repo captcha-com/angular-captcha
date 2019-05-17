@@ -47,7 +47,14 @@ export class CaptchaService {
   // get captcha html markup from botdetect api.
   getHtml(): any {
     if (!this.isCaptchaEndpointValid()) {
-      throw new Error("\'captchaEndpoint' setting is not set!");
+      const errorMessage = `captchaEndpoint property is not set!
+    The Angular Captcha Module requires the "this.captchaComponent.captchaEndpoint" property to be set.
+    For example: 
+    ngOnInit(): void {
+      this.captchaComponent.captchaEndpoint = 'https://your-app-backend-hostname.your-domain.com/simple-captcha-endpoint-path';
+    }
+      `;
+      throw new Error(errorMessage);
     }
 
     const url = this.captchaEndpoint + '?get=html&c=' + this.captchaStyleName;
