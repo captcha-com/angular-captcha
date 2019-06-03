@@ -1,13 +1,13 @@
-## BotDetect CAPTCHA Angular Module (TypeScript: Angular 2/4/5/6/7+)
+## BotDetect CAPTCHA Angular Module (TypeScript: Angular 2/4/5/6/7/8+)
 
 For a comprehensive step-by-step integration guide please see our [Angular Captcha Module Integration Guide](https://captcha.com/angular-captcha.html).  
 The guide covers the integration with the following backends:
-- ASP.NET (Core): web API with MVC6
+- ASP.NET (Core): web API with MVC Core
 - ASP.NET (Legacy): Web-API2, MVC1-5, Generic Handler
 - Java: Servlet, Spring, Struts
 - PHP: the plain PHP
 
-To give you a hint how Angular Captcha Module works we pasted a few, not necessary up-to-date (and mostly frontend related), excerpts from it bellow.
+To give you a hint how Angular Captcha Module works we pasted bellow a few excerpts from the Integration Guide.
 
 ### Quick guide:
 
@@ -17,57 +17,61 @@ To give you a hint how Angular Captcha Module works we pasted a few, not necessa
 npm install angular-captcha --save
 ```
 
-##### Step 2: Declare Angular Captcha Module in Your App, and Configure Backend Captcha Endpoint
+and add the following lines into the import section of your app's app.module.ts file:
+
+```typescript
+// import the Angular Captcha Module 
+import { BotDetectCaptchaModule } from 'angular-captcha'; 
+
+@NgModule({
+  imports: [
+    ...
+    BotDetectCaptchaModule
+  ],
+  ...
+})
+```
+
+##### Step 2: Set the captchaEndpoint in Your App's Frontend
 
 Endpoint configuration depends on which technology you use in the backend.
 
 - ASP.NET-based backend:
 
 ```typescript
-import { BotDetectCaptchaModule } from 'angular-captcha';
+import { CaptchaComponent } from 'angular-captcha'; 
+ 
+export class YourFormWithCaptchaComponent {
 
-@NgModule({
-  imports: [
-    ...
-    BotDetectCaptchaModule.forRoot({
-      captchaEndpoint: 
-        'https://your-app-backend-hostname.your-domain.com/simple-captcha-endpoint.ashx'
-    })
-  ],
-  ...
-})
+  ngOnInit(): void {
+    this.captchaComponent.captchaEndpoint = 
+      'https://your-app-backend-hostname.your-domain.com/simple-captcha-endpoint.ashx';
+  }
 ```
 
 - Java-based backend:
-```typescript
-import { BotDetectCaptchaModule } from 'angular-captcha';
 
-@NgModule({
-  imports: [
-    ...
-    BotDetectCaptchaModule.forRoot({
-      captchaEndpoint: 
-        'https://your-app-backend-hostname.your-domain.com/simple-captcha-endpoint'
-    })
-  ],
-  ...
-})
+```typescript
+import { CaptchaComponent } from 'angular-captcha'; 
+
+export class YourFormWithCaptchaComponent {
+
+  ngOnInit(): void {
+    this.captchaComponent.captchaEndpoint = 
+      'https://your-app-backend-hostname.your-domain.com/simple-captcha-endpoint';
+  }
 ```
 
 - PHP-based backend:
 ```typescript
-import { BotDetectCaptchaModule } from 'angular-captcha';
+import { CaptchaComponent } from 'angular-captcha'; 
 
-@NgModule({
-  imports: [
-    ...
-    BotDetectCaptchaModule.forRoot({
-      captchaEndpoint: 
-        'https://your-app-backend-hostname.your-domain.com/botdetect-captcha-lib/simple-botdetect.php'
-    })
-  ],
-  ...
-})
+export class YourFormWithCaptchaComponent {
+
+  ngOnInit(): void {
+    this.captchaComponent.captchaEndpoint = 
+      'https://your-app-backend-hostname.your-domain.com/botdetect-captcha-lib/simple-botdetect.php';
+  }
 ```
 
 ##### Step 3: Displaying the Captcha Challenge in Your Form
@@ -101,7 +105,11 @@ import { CaptchaComponent } from 'angular-captcha';
 })
 export class YourFormWithCaptchaComponent {
 
-  @ViewChild(CaptchaComponent) captchaComponent: CaptchaComponent;
+  // uncomment the line bellow if you use Angular 2/4/5/6/7
+  // @ViewChild(CaptchaComponent) captchaComponent: CaptchaComponent;
+
+  // uncomment the line bellow if you use Angular 8
+  // @ViewChild(CaptchaComponent, { static: true }) captchaComponent: CaptchaComponent;
 
   constructor(
     private yourFormWithCaptchaService: YourFormWithCaptchaService
