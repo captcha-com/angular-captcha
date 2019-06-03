@@ -1,6 +1,5 @@
 import { Directive, forwardRef, HostListener, Inject } from '@angular/core';
 import { NG_ASYNC_VALIDATORS, AbstractControl, Validator } from '@angular/forms';
-import { DOCUMENT } from '@angular/platform-browser';
 
 import { CaptchaService } from './captcha.service';
 
@@ -20,7 +19,6 @@ export class CorrectCaptchaDirective implements Validator {
   control: AbstractControl;
 
   constructor(
-    @Inject(DOCUMENT) private document: any,
     private captchaService: CaptchaService
   ) { }
 
@@ -36,8 +34,7 @@ export class CorrectCaptchaDirective implements Validator {
 
       // we only validate the captcha on blur
       if (onBlur) {
-        let userInputID = this.captchaService.botdetectInstance.options.userInputID;
-        let captchaCode = this.document.getElementById(userInputID).value;
+        let captchaCode = this.captchaService.botdetectInstance.userInput.value;
 
         if (captchaCode) {
           this.captchaService.validateUnsafe(captchaCode)
