@@ -1,162 +1,198 @@
-## BotDetect Captcha Angular Module (TypeScript: Angular 2/4/5/6/7+)
+## BotDetect CAPTCHA Angular Module (TypeScript: Angular 2/4/5/6/7/8+)
 
-### Requirements:
-BotDetect Captcha Angular Module requires [BotDetect ASP.NET Captcha](https://captcha.com/asp.net-captcha.html#simple-api), [BotDetect Java Captcha](https://captcha.com/java-captcha.html#simple-api) or [BotDetect PHP Captcha](https://captcha.com/php-captcha.html#simple-api) library to generate Captcha challenges. Simple API support for ASP.NET Core and .NET Core will be released this month -- very likely during the week of 2018/11/19-25. See our [roadmap](https://captcha.com/captcha-roadmap-and-release-notes.html#aspnet-release-notes) for details.
+For a comprehensive step-by-step integration guide please see our [Angular Captcha Module Integration Guide](https://captcha.com/angular-captcha.html).  
+The guide covers the integration with the following backends:
+- ASP.NET (Core): web API with MVC Core
+- ASP.NET (Legacy): Web-API2, MVC1-5, Generic Handler
+- Java: Servlet, Spring, Struts
+- PHP: the plain PHP
 
-### Quickstart:
+To give you a hint how Angular Captcha Module works we pasted bellow a few excerpts from the Integration Guide.
 
-##### Step 1: Install Captcha Angular Module
+### Quick guide:
+
+##### Step 1:  Install Angular Captcha Module
+
 ```sh
 npm install angular-captcha --save
 ```
-##### Step 2: Load Captcha Angular Module
-If you use SystemJS, declare the following in your SystemJS config file:
-```javascript
-  map: {
-    ...
-    'angular-captcha': 'npm:angular-captcha'
-  },
-  packages: {
-    ...
-    'angular-captcha': {
-      defaultExtension: 'js',
-      main: 'index'
-    },
-```
-##### Step 3: Declare BotDetect Captcha Angular Module in your application, and configure backend Captcha endpoint
 
-Endpoint Configuration depends on which technology you use in the backend.
+and add the following lines into the import section of your app's app.module.ts file:
+
+```typescript
+// import the Angular Captcha Module 
+import { BotDetectCaptchaModule } from 'angular-captcha'; 
+
+@NgModule({
+  imports: [
+    ...
+    BotDetectCaptchaModule
+  ],
+  ...
+})
+```
+
+##### Step 2: Set the captchaEndpoint in Your App's Frontend
+
+Endpoint configuration depends on which technology you use in the backend.
 
 - ASP.NET-based backend:
 
 ```typescript
-import { BotDetectCaptchaModule } from 'angular-captcha';
+import { CaptchaComponent } from 'angular-captcha'; 
+ 
+export class YourFormWithCaptchaComponent {
 
-@NgModule({
-  imports: [
-    ...
-    BotDetectCaptchaModule.forRoot({
-      captchaEndpoint: 'captcha-endpoint/BotDetectCaptcha.ashx'
-    })
-  ],
-  ...
-})
+  ngOnInit(): void {
+    this.captchaComponent.captchaEndpoint = 
+      'https://your-app-backend-hostname.your-domain.com/simple-captcha-endpoint.ashx';
+  }
 ```
 
 - Java-based backend:
-```typescript
-import { BotDetectCaptchaModule } from 'angular-captcha';
 
-@NgModule({
-  imports: [
-    ...
-    BotDetectCaptchaModule.forRoot({
-      captchaEndpoint: 'captcha-endpoint/botdetectcaptcha'
-    })
-  ],
-  ...
-})
+```typescript
+import { CaptchaComponent } from 'angular-captcha'; 
+
+export class YourFormWithCaptchaComponent {
+
+  ngOnInit(): void {
+    this.captchaComponent.captchaEndpoint = 
+      'https://your-app-backend-hostname.your-domain.com/simple-captcha-endpoint';
+  }
 ```
 
 - PHP-based backend:
 ```typescript
-import { BotDetectCaptchaModule } from 'angular-captcha';
+import { CaptchaComponent } from 'angular-captcha'; 
 
-@NgModule({
-  imports: [
-    ...
-    BotDetectCaptchaModule.forRoot({
-      captchaEndpoint: 'captcha-endpoint/simple-botdetect.php'
-    })
-  ],
-  ...
-})
+export class YourFormWithCaptchaComponent {
+
+  ngOnInit(): void {
+    this.captchaComponent.captchaEndpoint = 
+      'https://your-app-backend-hostname.your-domain.com/botdetect-captcha-lib/simple-botdetect.php';
+  }
 ```
 
-##### Step 4: Displaying the Captcha Challenge in your form
+##### Step 3: Displaying the Captcha Challenge in Your Form
 
-Place the following tag in your form where you want to display Captcha:
+Place the following lines in your form where you want to display captcha:
 ```html
-<botdetect-captcha styleName="exampleCaptcha"></botdetect-captcha>
+<botdetect-captcha captchaStyleName="yourFirstCaptchaStyle"></botdetect-captcha>  
+<input id="userCaptchaInput" 
+  name="userCaptchaInput" 
+  ngModel 
+  #userCaptchaInput="ngModel"  
+  type="text" >  
 ```
 
-##### Step 5: Client-side Captcha Validation
-- Using validateUnsafe(callback) method to validate Captcha code on form submit:
+##### Step 4: Captcha Validation: Client-side Code
+
 ```typescript
-export class ExampleComponent {
+import { Component, ViewChild } from '@angular/core';
+import { Observable } from 'rxjs/Rx';
 
-  /**
-   * BotDetect CAPTCHA component.
-   */
-  @ViewChild(CaptchaComponent) captchaComponent: CaptchaComponent;
+import { YourFormWithCaptchaService } from './your-form-with-captcha.service';
 
-  /**
-   * On form submit.
-   */
+import { CaptchaComponent } from 'angular-captcha';
+
+@Component({
+  moduleId: module.id,
+  selector: 'your-form-with-captcha',
+  templateUrl: 'your-form-with-captcha.component.html',
+  styleUrls: ['your-form-with-captcha.component.css'],
+  providers: [YourFormWithCaptchaService]
+})
+export class YourFormWithCaptchaComponent {
+
+  // uncomment the line bellow if you use Angular 2/4/5/6/7
+  // @ViewChild(CaptchaComponent) captchaComponent: CaptchaComponent;
+
+  // uncomment the line bellow if you use Angular 8
+  // @ViewChild(CaptchaComponent, { static: true }) captchaComponent: CaptchaComponent;
+
+  constructor(
+    private yourFormWithCaptchaService: YourFormWithCaptchaService
+  ) { }
+
+  // Process the form on submit event.
   validate(value, valid): void {
 
-    this.captchaComponent.validateUnsafe((isCaptchaCodeCorrect: boolean) => {
-      if (isCaptchaCodeCorrect) {
-        // Captcha code is correct
-      } else {
-        // Captcha code is incorrect
-      }
-    });
-  }
+    // get the user-entered captcha code value to be validated at the backend side        
+    let userEnteredCaptchaCode = this.captchaComponent.userEnteredCaptchaCode;
+    
+    // get the id of a captcha instance that the user tried to solve
+    let captchaId = this.captchaComponent.captchaId;
 
+    const postData = {
+      userEnteredCaptchaCode: userEnteredCaptchaCode,
+      captchaId: captchaId
+    };
+
+    // post the captcha data to the /your-app-backend-path on your backend
+    this.yourFormWithCaptchaService.send(postData)
+      .subscribe(
+        response => {
+          if (response.success == false) {
+            // captcha validation failed; reload image
+            this.captchaComponent.reloadImage();
+            // TODO: maybe display an error message, too
+          } else {
+            // TODO: captcha validation succeeded; proceed with the workflow
+          }
+        },
+        error => {
+          throw new Error(error);
+        });
+  }
 }
 ```
 
-OR
+##### Step 5: Captcha Validation: Server-side Code
 
-- Using correctCaptcha directive attribute to validate Captcha code on blur event:
-```html
-<input
-  type="text"
-  id="captchaCode"
-  name="captchaCode"
-  #captchaCode="ngModel"
-  ngModel
-  correctCaptcha
->
-```
-##### Step 6: Server-side Captcha Validation
-These client-side captcha validations are just an usability improvement that you may use or not -- they do not protect your form from spammers at all.
+The `userEnteredCaptchaCode` and `captchaId` values posted from the frontend are used to validate a captcha challenge on the backend.
 
-As you are protecting some server-side action you must validate a Captcha at the server-side before executing that protected action.
+The validation is performed by calling the: `Validate(userEnteredCaptchaCode, captchaId)`.
 
-- If you have [ASP.NET Captcha](https://captcha.com/asp.net-captcha.html#simple-api) library on a server side validation would look similar to this:
+- If you have [ASP.NET Captcha](https://captcha.com/asp.net-captcha.html) library on a server side validation would look similar to this:
 ```csharp
 // C#
-SimpleCaptcha captcha = new SimpleCaptcha();
-bool isHuman = captcha.Validate(captchaCode, captchaId);
+SimpleCaptcha yourFirstCaptcha = new SimpleCaptcha();
+bool isHuman = yourFirstCaptcha.Validate(captchaCode, captchaId);
 ```
 ```vbnet
 ' VB.NET
-Dim captcha As SimpleCaptcha = New SimpleCaptcha()
-Dim isHuman As Boolean = captcha.Validate(captchaCode, captchaId)
+Dim yourFirstCaptcha As SimpleCaptcha = New SimpleCaptcha()
+Dim isHuman As Boolean = yourFirstCaptcha.Validate(captchaCode, captchaId)
 ```
 
-- If you have [Java Captcha](https://captcha.com/java-captcha.html#simple-api) library on a server side validation would look similar to this:
+- If you have [Java Captcha](https://captcha.com/java-captcha.html) library on a server side validation would look similar to this:
 ```java
-SimpleCaptcha captcha = SimpleCaptcha.load(request);
-boolean isHuman = captcha.validate(captchaCode, captchaId);
+SimpleCaptcha yourFirstCaptcha = SimpleCaptcha.load(request);
+boolean isHuman = yourFirstCaptcha.validate(captchaCode, captchaId);
 ```
 
-- If you have [PHP Captcha](https://captcha.com/php-captcha.html#simple-api) library on a server side validation would look similar to this:
+- If you have [PHP Captcha](https://captcha.com/php-captcha.html) library on a server side validation would look similar to this:
 ```php
-$captcha = new SimpleCaptcha();
-$isHuman = $captcha->Validate($captchaCode, $captchaId);
+$yourFirstCaptcha = new SimpleCaptcha();
+$isHuman = $yourFirstCaptcha->Validate($captchaCode, $captchaId);
 ```
 
 ### Documentation:
- 
-[Angular CAPTCHA Integration Guide](https://captcha.com/angular-captcha.html#angular:2+)
 
-### Examples: 
-[Basic Angular CAPTCHA Example](https://captcha.com/doc/angular/examples/angular-basic-captcha-example.html)
+[Angular Captcha Module Step-by-step Integration Guide](https://captcha.com/angular-captcha.html) -- read this one first
 
-[Angular CAPTCHA Form Example](https://captcha.com/doc/angular/examples/angular-form-captcha-example.html)
+[Angular Captcha Module Basic Example](https://captcha.com/doc/angular/examples/angular-basic-captcha-example.html) -- partial code walk-through
+
+[Angular Captcha Module Form Example](https://captcha.com/doc/angular/examples/angular-form-captcha-example.html) -- partial code walk-through
+
+### Dependencies:
+
+The current version of the Angular Captcha Module requires one of the following BotDetect CAPTCHA backends:
+- [ASP.NET v4.4.1+](https://captcha.com/asp.net-captcha.html)
+- [Java v4.0.Beta3.6+](https://captcha.com/java-captcha.html)
+- [PHP v4.2.4+](https://captcha.com/php-captcha.html)
+
 
 ### Support:
 
