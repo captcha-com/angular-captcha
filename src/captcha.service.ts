@@ -4,17 +4,21 @@ import { Http, Response } from '@angular/http';
 import { Observable } from 'rxjs/Rx';
 
 import { CaptchaEndpointPipe } from './captcha-endpoint.pipe';
+import { CaptchaSettings } from './captcha-settings.interface';
+import { CAPTCHA_SETTINGS } from './config';
+
 declare var BotDetect: any;
 
 @Injectable()
 export class CaptchaService {
 
   private _captchaStyleName: string;
-  private static _captchaEndpoint: string;
+  private _captchaEndpoint: string;
 
   constructor(
     private http: Http,
-    private captchaEndpointPipe: CaptchaEndpointPipe
+    private captchaEndpointPipe: CaptchaEndpointPipe,
+    @Inject(CAPTCHA_SETTINGS) private config: CaptchaSettings
   ) { }
 
   set captchaStyleName(captchaStyleName: string) {
@@ -25,13 +29,17 @@ export class CaptchaService {
     return this._captchaStyleName;
   }
 
-  static set captchaEndpoint(captchaEndpoint: string) {
-    CaptchaService._captchaEndpoint = captchaEndpoint;
+  set captchaEndpoint(captchaEndpoint: string) {
+    this._captchaEndpoint = captchaEndpoint;
   }
 
   // the captcha endpoint for botdetect requests.
   get captchaEndpoint(): string {
-    return this.captchaEndpointPipe.transform(CaptchaService._captchaEndpoint);
+    let captchaEndpoint = this._captchaEndpoint;
+    if (this.config && this.config.captchaEndpoint) {
+      captchaEndpoint = this.config.captchaEndpoint;
+    }
+    return this.captchaEndpointPipe.transform(captchaEndpoint);
   }
 
   // get botdetect instance, which is provided by botdetect script.
@@ -39,16 +47,9 @@ export class CaptchaService {
     return BotDetect.getInstanceByStyleName(this.captchaStyleName);
   }
 
-  // check if configured captchaEndpoint is valid or not.
-  isCaptchaEndpointValid(): boolean {
-    return ((this.captchaEndpoint !== undefined)
-            && (this.captchaEndpoint !== null)
-            && (this.captchaEndpoint !== ''));
-  }
-
   // get captcha html markup from botdetect api.
   getHtml(): Observable<string> {
-    if (!this.isCaptchaEndpointValid()) {
+    if (!this.captchaEndpoint) {
       const errorMessage = `captchaEndpoint property is not set!
     The Angular Captcha Module requires the "this.captchaComponent.captchaEndpoint" property to be set.
     For example: 

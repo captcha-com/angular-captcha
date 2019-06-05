@@ -21,7 +21,14 @@ import { CAPTCHA_SETTINGS } from './config';
   providers: [
     CaptchaService,
     CaptchaHelperService,
-    CaptchaEndpointPipe
+    CaptchaEndpointPipe,
+    {
+      // we need this provide CAPTCHA_SETTINGS declaration
+      // since we have added support for the captchaEndpoint 
+      // setting in component
+      provide: CAPTCHA_SETTINGS,
+      useValue: null
+    }
   ],
   exports: [
     CaptchaComponent,
@@ -46,8 +53,6 @@ export class BotDetectCaptchaModule {
 }
 
 export function provideBotDetectCaptcha(config: CaptchaSettings): any {
-  CaptchaService.captchaEndpoint = config.captchaEndpoint;
-  // we need to keep the below dependency providers for backward compatibility
   return [
     {
       provide: CAPTCHA_SETTINGS,
