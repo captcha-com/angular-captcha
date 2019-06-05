@@ -20,7 +20,7 @@ export class CaptchaComponent implements OnInit {
 
   // provide captchaEndpoint for getting captcha challenge.
   set captchaEndpoint(captchaEndpoint: string) {
-    CaptchaService.captchaEndpoint = captchaEndpoint;
+    this.captchaService.captchaEndpoint = captchaEndpoint;
   }
 
   // the current captcha id, which will be used for validation purpose.
