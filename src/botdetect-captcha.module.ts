@@ -37,14 +37,14 @@ import { CAPTCHA_SETTINGS } from './config';
 })
 export class BotDetectCaptchaModule {
 
-  static forRoot(config: CaptchaSettings): ModuleWithProviders {
+  static forRoot(config: CaptchaSettings): ModuleWithProviders<BotDetectCaptchaModule> {
     return {
       ngModule: BotDetectCaptchaModule,
       providers: [provideBotDetectCaptcha(config)]
     };
   }
 
-  static forChild(config: CaptchaSettings): ModuleWithProviders {
+  static forChild(config: CaptchaSettings): ModuleWithProviders<BotDetectCaptchaModule> {
     return {
       ngModule: BotDetectCaptchaModule,
       providers: [provideBotDetectCaptcha(config)]
